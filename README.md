@@ -3,20 +3,20 @@
 A responsive weather application built with React.js that shows real-time weather data using the OpenWeatherMap API.
 
 # Features
-   Search weather by city
-   Real-time temperature, humidity, and wind info
-   Responsive and clean UI
+   -Search weather by city
+   -Real-time temperature, humidity, and wind info
+   -Responsive and clean UI
 
 # Tech Stack
-  React.js
-  Tailwid CSS
-  OpenWeatherMap API   
+  - React.js
+  - Tailwid CSS
+  - OpenWeatherMap API   
 
 # Bash  
-  git clone https://github.com/your-username/your-repo-name.git
-  cd WeatherApp
-  npm install
-  npm run dev 
+  - git clone https://github.com/niteshkumar9631/WeatherApp.git
+  - cd WeatherApp
+  - npm install
+  - npm run dev 
 
 # API Key Setup  
   1. Create a .env file in the root directory.
