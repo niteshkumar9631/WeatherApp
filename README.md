@@ -3,9 +3,9 @@
 A responsive weather application built with React.js that shows real-time weather data using the OpenWeatherMap API.
 
 # Features
-   -Search weather by city
-   -Real-time temperature, humidity, and wind info
-   -Responsive and clean UI
+   - Search weather by city
+   - Real-time temperature, humidity, and wind info
+   - Responsive and clean UI
 
 # Tech Stack
   - React.js
