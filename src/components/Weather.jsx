@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Weather.css';
 import searchIcon from '../assets/search.png';
 import clear from '../assets/clear.png';
@@ -12,6 +12,8 @@ import wind from '../assets/wind.png';
 const Weather = () => {
     const inputRef = useRef();
     const [weatherData, setWeatherData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const allIcons = {
         "01d": clear,
@@ -31,28 +33,25 @@ const Weather = () => {
     };
 
     const fetchWeather = async (city) => {
-        if (city ===""){
+        if (city === "") {
             alert("Enter the city name");
-          return;
-        } 
-        
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
         try {
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
             const response = await fetch(url);
             const data = await response.json();
 
-            if(!response.ok){
-                alert(data.message);
-                return;
-            }
-
-            if (!data || data.cod !== 200) {
-                console.error("Invalid city or API error:", data);
+            if (!response.ok) {
                 setWeatherData(null);
+                setError(data.message);
                 return;
             }
 
-            const icon = allIcons[data.weather[0].icon] || clear;
+            const icon = allIcons[data?.weather?.[0]?.icon] || clear;
 
             setWeatherData({
                 humidity: data.main.humidity,
@@ -62,8 +61,11 @@ const Weather = () => {
                 icon: icon
             });
         } catch (error) {
-            setWeatherData(false);
-            console.error("Error fetching weather data:", error);
+            console.error("Error fetching weather:", error);
+            setWeatherData(null);
+            setError("Failed to fetch weather data.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -74,11 +76,27 @@ const Weather = () => {
     return (
         <div className='weather'>
             <div className="search-bar">
-                <input ref={inputRef} type="text" placeholder='Search city...' />
-                <img src={searchIcon} alt="search" onClick={() => fetchWeather(inputRef.current.value)} />
+                <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder='Search city...'
+                    onKeyDown={(e) => e.key === 'Enter' && fetchWeather(inputRef.current.value)}
+                />
+                <img
+                    src={searchIcon}
+                    alt="search"
+                    onClick={() => {
+                        fetchWeather(inputRef.current.value);
+                        inputRef.current.value = "";
+                    }}
+                />
             </div>
 
-            {weatherData ? (
+            {loading ? (
+                <p className='message'>Loading weather...</p>
+            ) : error ? (
+                <p className='message error'>{error}</p>
+            ) : weatherData ? (
                 <>
                     <img src={weatherData.icon} alt="Weather Icon" className='weather-icon' />
                     <p className='temperature'>{weatherData.temperature}°C</p>
@@ -101,7 +119,7 @@ const Weather = () => {
                     </div>
                 </>
             ) : (
-                <p>Loading weather...</p>
+                <p className='message'>No weather data available.</p>
             )}
         </div>
     );
