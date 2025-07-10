@@ -2,6 +2,9 @@
 
 A responsive weather application built with React.js that shows real-time weather data using the OpenWeatherMap API.
 
+## 🔗 Live Demo
+https://weather-app-niteshkumar.vercel.app/
+
 # Features
    - Search weather by city
    - Real-time temperature, humidity, and wind info
